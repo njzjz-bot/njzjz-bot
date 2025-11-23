@@ -82,3 +82,14 @@ Tasks may require additional Python packages. Common dependencies:
 - Standard library modules (`re`, `os`, etc.)
 
 These should be installed in the GitHub Actions workflow.
+
+## GitHub Token Setup
+
+For tasks to work in production mode (after merging to main), you need to set up a GitHub token:
+
+1. **For testing (Pull Requests)**: The default `GITHUB_TOKEN` is used with `--dry-run` mode
+2. **For production (Main branch)**: You should configure a `MULTI_GITTER_TOKEN` secret with a Personal Access Token (PAT) that has:
+   - `repo` scope (for forking and creating PRs)
+   - Access to target repositories
+
+Without the `MULTI_GITTER_TOKEN` secret, the workflow will fall back to the default `GITHUB_TOKEN`, which only has permissions for the current repository.

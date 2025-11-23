@@ -41,3 +41,9 @@ Quick steps:
 - Python 3.x
 - multi-gitter CLI tool
 - Required Python packages: `packaging`
+
+## GitHub Token Configuration
+
+- **Pull Requests**: Uses default `GITHUB_TOKEN` with `--dry-run` mode (no actual changes made)
+- **Production (Main branch)**: Uses `MULTI_GITTER_TOKEN` secret if configured, otherwise falls back to `GITHUB_TOKEN`
+  - For cross-repository operations, configure `MULTI_GITTER_TOKEN` as a repository secret with a Personal Access Token (PAT) that has `repo` scope

@@ -13,6 +13,9 @@ on:
 jobs:
   run-tasks:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     strategy:
       matrix:
         task:
@@ -52,6 +55,8 @@ jobs:
         working-directory: tasks/${{ matrix.task }}
         run: |
           # Run in production mode after merge
+          # Note: For cross-repository operations, MULTI_GITTER_TOKEN should be
+          # a Personal Access Token with repo scope
           bash run.sh
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.MULTI_GITTER_TOKEN || secrets.GITHUB_TOKEN }}
