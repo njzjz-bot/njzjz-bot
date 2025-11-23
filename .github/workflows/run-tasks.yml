@@ -1,0 +1,57 @@
+name: Run Tasks
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'tasks/**'
+  pull_request:
+    paths:
+      - 'tasks/**'
+
+jobs:
+  run-tasks:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        task:
+          - sphinx-book-theme
+      fail-fast: false
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install multi-gitter
+        run: |
+          curl -s https://raw.githubusercontent.com/lindell/multi-gitter/master/install.sh | sh
+          sudo mv multi-gitter /usr/local/bin/
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install packaging
+
+      - name: Run task (dry-run for PRs)
+        if: github.event_name == 'pull_request'
+        working-directory: tasks/${{ matrix.task }}
+        run: |
+          # Run in dry-run mode with debug logging for pull requests
+          bash run.sh --dry-run --log-level=debug
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run task (production)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        working-directory: tasks/${{ matrix.task }}
+        run: |
+          # Run in production mode after merge
+          bash run.sh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
