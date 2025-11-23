@@ -30,7 +30,6 @@ for path in (
     "docs/conf.py",
     "conf.py",
 ):
-
     if not os.path.isfile(path):
         continue
     with open(path) as f:
