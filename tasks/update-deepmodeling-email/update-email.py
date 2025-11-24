@@ -50,6 +50,7 @@ TEXT_EXTENSIONS = [
 ]
 
 # Characters that are valid in text files
+# Includes: BEL(7), BS(8), HT(9), LF(10), FF(12), CR(13), ESC(27), and printable chars (0x20-0x7E, 0x80-0xFF)
 TEXTCHARS = bytearray({7,8,9,10,12,13,27} | set(range(0x20, 0x100)) - {0x7f})
 
 def is_binary_file(filepath):
