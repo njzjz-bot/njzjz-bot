@@ -60,6 +60,7 @@ The `multi-gitter` tool is used to apply changes across multiple repositories. C
 - `--git-type cmd` - Use command-line git
 - `-R, --repo` - Target repository (can be repeated)
 - `-O, --org` - Target all repositories in an organization (e.g., `-O deepmodeling`)
+- `--repo-exclude` - Exclude specific repositories (can be repeated, useful for very large repos)
 - `--conflict-strategy replace` - How to handle existing PRs
 - `--dry-run` - Preview changes without making them (used in PRs)
 - `--log-level=debug` - Verbose logging (used in PRs)
