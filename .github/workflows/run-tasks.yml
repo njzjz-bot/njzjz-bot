@@ -36,8 +36,8 @@ jobs:
             fi
           fi
           
-          # Get list of changed task directories
-          CHANGED_TASKS=$(git diff --name-only $BASE_SHA ${{ github.sha }} | grep '^tasks/' | cut -d'/' -f2 | sort -u)
+          # Get list of changed task directories (directories only, not files)
+          CHANGED_TASKS=$(git diff --name-only $BASE_SHA ${{ github.sha }} | grep '^tasks/' | cut -d'/' -f2 | sort -u | while read task; do [ -d "tasks/$task" ] && echo "$task"; done)
           
           # Convert to JSON array format without jq
           if [ -z "$CHANGED_TASKS" ]; then
@@ -79,8 +79,7 @@ jobs:
 
       - name: Install multi-gitter
         run: |
-          curl -s https://raw.githubusercontent.com/lindell/multi-gitter/master/install.sh | sh
-          sudo mv multi-gitter /usr/local/bin/
+          curl -s https://raw.githubusercontent.com/lindell/multi-gitter/master/install.sh | sudo sh
 
       - name: Run task (dry-run for PRs)
         if: github.event_name == 'pull_request'
