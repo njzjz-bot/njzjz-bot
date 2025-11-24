@@ -22,6 +22,7 @@ To create a new task:
 2. **Create a `run.sh` script** that:
    - Is executable (`chmod +x run.sh`)
    - Uses `multi-gitter` to run changes across multiple repositories
+   - Uses `uv run` to execute Python scripts
    - Includes proper author attribution:
      - `--author-email "48687836+njzjz-bot@users.noreply.github.com"`
      - `--author-name "njzjz-bot[bot]"`
@@ -33,9 +34,9 @@ To create a new task:
    - Perform the actual file modifications
    - Are called by the `run.sh` script
    - Handle missing files gracefully
+   - Use PEP 722 inline script metadata to declare dependencies
 
-4. **Update the workflow** by adding your task to `.github/workflows/run-tasks.yml`:
-   - Add the task name to the `matrix.task` list
+4. The workflow will automatically detect which tasks have changed and run only those tasks.
 
 ## Example Task
 
@@ -43,6 +44,8 @@ See `tasks/sphinx-book-theme/` for a complete example that:
 - Replaces `sphinx-rtd-theme` with `sphinx-book-theme` in Python projects
 - Updates multiple configuration and requirements files
 - Uses regex patterns to handle different file formats
+- Uses PEP 722 to declare Python dependencies (packaging)
+- Executes via `uv run` for dependency management
 
 ## multi-gitter Command Reference
 
@@ -62,8 +65,9 @@ The `multi-gitter` tool is used to apply changes across multiple repositories. C
 
 ## Workflow Behavior
 
-- **Pull Requests**: Tasks run with `--dry-run --log-level=debug` flags to preview changes
-- **Main Branch**: After merging, tasks run with the `GITHUB_TOKEN` to create actual PRs
+- **Pull Requests**: Changed tasks are automatically detected and run with `--dry-run --log-level=debug` flags to preview changes
+- **Main Branch**: After merging, changed tasks run with the `GITHUB_TOKEN` to create actual PRs
+- Tasks are run using `uv` for Python dependency management (via PEP 722 inline metadata)
 
 ## Best Practices
 
@@ -77,11 +81,17 @@ The `multi-gitter` tool is used to apply changes across multiple repositories. C
 
 ## Requirements
 
-Tasks may require additional Python packages. Common dependencies:
-- `packaging` - For version parsing
-- Standard library modules (`re`, `os`, etc.)
+Python scripts should declare their dependencies using PEP 722 inline script metadata:
 
-These should be installed in the GitHub Actions workflow.
+```python
+# /// script
+# dependencies = [
+#   "package-name",
+# ]
+# ///
+```
+
+The workflow uses `uv` to automatically install dependencies declared this way.
 
 ## GitHub Token Setup
 

@@ -2,7 +2,7 @@
 # This script uses multi-gitter to run the sphinx-book-theme replacement task
 # across multiple repositories.
 
-multi-gitter run "python $PWD/sphinx-book-theme.py" \
+multi-gitter run "uv run $PWD/sphinx-book-theme.py" \
   --author-email "48687836+njzjz-bot@users.noreply.github.com" \
   --author-name "njzjz-bot[bot]" \
   -B sphinx-book-theme \

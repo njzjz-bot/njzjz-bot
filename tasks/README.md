@@ -9,7 +9,7 @@ Each task is stored in its own subdirectory with the following files:
 - `run.sh` - Shell script that executes the task using multi-gitter (required)
 - Additional scripts (e.g., Python files) that perform the actual modifications (optional)
 
-## Available Tasks
+## Example Tasks
 
 ### sphinx-book-theme
 
@@ -38,9 +38,8 @@ Quick steps:
 
 ## Requirements
 
-- Python 3.x
+- Python 3.x (via uv)
 - multi-gitter CLI tool
-- Required Python packages: `packaging`
 
 ## GitHub Token Configuration
 

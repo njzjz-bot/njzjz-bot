@@ -1,3 +1,8 @@
+# /// script
+# dependencies = [
+#   "packaging",
+# ]
+# ///
 from packaging.version import VERSION_PATTERN
 import re
 import os
