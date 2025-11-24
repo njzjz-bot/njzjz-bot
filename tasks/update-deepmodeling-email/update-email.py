@@ -43,12 +43,6 @@ FILE_PATTERNS = [
 SKIP_DIRS = {'.git', '__pycache__', 'node_modules', '.tox', '.eggs', 
              'dist', 'build', '.pytest_cache', '.venv', 'venv'}
 
-# File extensions to check during recursive search
-TEXT_EXTENSIONS = [
-    '.md', '.rst', '.txt', '.py', '.cfg', '.toml', '.yaml', '.yml',
-    '.json', '.sh', '.bash', '.html', '.xml', '.ini', '.conf'
-]
-
 # Characters that are valid in text files
 # Includes: BEL(7), BS(8), HT(9), LF(10), FF(12), CR(13), ESC(27), and printable chars (0x20-0x7E, 0x80-0xFF)
 TEXTCHARS = bytearray({7,8,9,10,12,13,27} | set(range(0x20, 0x100)) - {0x7f})
@@ -104,19 +98,17 @@ def find_and_update_in_directory(directory="."):
         if update_file(filepath):
             updated_files.add(filepath)
     
-    # Then, recursively search through all text files
+    # Then, recursively search through all files
     for root, dirs, files in os.walk(directory):
         # Skip certain directories
         dirs[:] = [d for d in dirs if d not in SKIP_DIRS]
         
         for filename in files:
-            # Only check text files (common extensions)
-            if any(filename.endswith(ext) for ext in TEXT_EXTENSIONS):
-                filepath = os.path.join(root, filename)
-                # Skip files we already updated
-                if filepath not in updated_files:
-                    if update_file(filepath):
-                        updated_files.add(filepath)
+            filepath = os.path.join(root, filename)
+            # Skip files we already updated
+            if filepath not in updated_files:
+                if update_file(filepath):
+                    updated_files.add(filepath)
     
     return list(updated_files)  # Convert back to list for consistent return type
 
