@@ -66,15 +66,20 @@ def update_file(filepath):
     
     new_content = content.replace(OLD_EMAIL, NEW_EMAIL)
     
-    with open(filepath, 'w', encoding='utf-8') as f:
-        f.write(new_content)
+    try:
+        with open(filepath, 'w', encoding='utf-8') as f:
+            f.write(new_content)
+    except (PermissionError, OSError) as e:
+        # Skip files we can't write to
+        print(f"Warning: Could not update {filepath}: {e}")
+        return False
     
     print(f"Updated: {filepath}")
     return True
 
 def find_and_update_in_directory(directory="."):
     """Recursively search for files containing the old email and update them"""
-    updated_files = set()  # Use set for O(1) lookup
+    updated_files = set()  # Use set for O(1) membership checking to avoid duplicate processing
     
     # First, check common file patterns
     for pattern in FILE_PATTERNS:
