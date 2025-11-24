@@ -57,8 +57,8 @@ def update_file(filepath):
     try:
         with open(filepath, 'r', encoding='utf-8') as f:
             content = f.read()
-    except (UnicodeDecodeError, PermissionError):
-        # Skip binary files or files we can't read
+    except (UnicodeDecodeError, PermissionError, FileNotFoundError, IsADirectoryError):
+        # Skip binary files, permission issues, or other file access errors
         return False
     
     if OLD_EMAIL not in content:
@@ -74,13 +74,13 @@ def update_file(filepath):
 
 def find_and_update_in_directory(directory="."):
     """Recursively search for files containing the old email and update them"""
-    updated_files = []
+    updated_files = set()  # Use set for O(1) lookup
     
     # First, check common file patterns
     for pattern in FILE_PATTERNS:
         filepath = os.path.join(directory, pattern)
         if update_file(filepath):
-            updated_files.append(filepath)
+            updated_files.add(filepath)
     
     # Then, recursively search through all text files
     for root, dirs, files in os.walk(directory):
@@ -94,9 +94,9 @@ def find_and_update_in_directory(directory="."):
                 # Skip files we already updated
                 if filepath not in updated_files:
                     if update_file(filepath):
-                        updated_files.append(filepath)
+                        updated_files.add(filepath)
     
-    return updated_files
+    return list(updated_files)  # Convert back to list for consistent return type
 
 if __name__ == "__main__":
     print(f"Searching for '{OLD_EMAIL}' and replacing with '{NEW_EMAIL}'...")
