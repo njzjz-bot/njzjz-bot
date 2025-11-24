@@ -49,14 +49,15 @@ TEXT_EXTENSIONS = [
     '.json', '.sh', '.bash', '.html', '.xml', '.ini', '.conf'
 ]
 
-# Characters that indicate a binary file
+# Characters that are valid in text files
 TEXTCHARS = bytearray({7,8,9,10,12,13,27} | set(range(0x20, 0x100)) - {0x7f})
 
 def is_binary_file(filepath):
     """Check if a file is binary by reading the first 1024 bytes"""
     try:
         with open(filepath, 'rb') as f:
-            return bool(f.read(1024).translate(None, TEXTCHARS))
+            chunk = f.read(1024)
+            return bool(chunk.translate(None, TEXTCHARS))
     except (PermissionError, FileNotFoundError, IsADirectoryError, OSError):
         return True  # Treat inaccessible files as binary
 
