@@ -26,7 +26,7 @@ To create a new task:
    - Includes proper author attribution:
      - `--author-email "48687836+njzjz-bot@users.noreply.github.com"`
      - `--author-name "njzjz-bot[bot]"`
-   - Specifies target repositories with `-R` flag
+   - Specifies target repositories with `-R` flag or organization with `-O` flag
    - Includes a descriptive commit message with `-m` flag
    - References the GitHub issue that generated the task
 
@@ -59,6 +59,7 @@ The `multi-gitter` tool is used to apply changes across multiple repositories. C
 - `-m, --commit-message` - Commit message
 - `--git-type cmd` - Use command-line git
 - `-R, --repo` - Target repository (can be repeated)
+- `-O, --org` - Target all repositories in an organization (e.g., `-O deepmodeling`)
 - `--conflict-strategy replace` - How to handle existing PRs
 - `--dry-run` - Preview changes without making them (used in PRs)
 - `--log-level=debug` - Verbose logging (used in PRs)

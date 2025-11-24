@@ -49,16 +49,31 @@ TEXT_EXTENSIONS = [
     '.json', '.sh', '.bash', '.html', '.xml', '.ini', '.conf'
 ]
 
+# Characters that indicate a binary file
+TEXTCHARS = bytearray({7,8,9,10,12,13,27} | set(range(0x20, 0x100)) - {0x7f})
+
+def is_binary_file(filepath):
+    """Check if a file is binary by reading the first 1024 bytes"""
+    try:
+        with open(filepath, 'rb') as f:
+            return bool(f.read(1024).translate(None, TEXTCHARS))
+    except (PermissionError, FileNotFoundError, IsADirectoryError, OSError):
+        return True  # Treat inaccessible files as binary
+
 def update_file(filepath):
     """Update email in a single file"""
     if not os.path.isfile(filepath):
+        return False
+    
+    # Check if file is binary
+    if is_binary_file(filepath):
         return False
     
     try:
         with open(filepath, 'r', encoding='utf-8') as f:
             content = f.read()
     except (UnicodeDecodeError, PermissionError, FileNotFoundError, IsADirectoryError):
-        # Skip binary files, permission issues, or other file access errors
+        # Skip files we can't read
         return False
     
     if OLD_EMAIL not in content:
