@@ -26,7 +26,7 @@ FILE_PATTERNS = [
     "CHANGELOG.rst",
     "HISTORY.md",
     "HISTORY.rst",
-    
+
     # Python files
     "setup.py",
     "setup.cfg",
@@ -102,7 +102,7 @@ def update_file(filepath):
 
 def find_and_update_in_directory(directory="."):
     """Recursively search for files containing the old brand name and update them"""
-    updated_files = set()  # Use set for O(1) membership checking to avoid duplicate processing
+    updated_files = set()  # Use set to avoid duplicate processing
     
     # First, check common file patterns
     for pattern in FILE_PATTERNS:
