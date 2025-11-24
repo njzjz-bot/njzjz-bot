@@ -28,15 +28,32 @@ jobs:
             BASE_SHA="${{ github.event.pull_request.base.sha }}"
           else
             BASE_SHA="${{ github.event.before }}"
+            # Handle new branches where before is all zeros
+            if [ "$BASE_SHA" == "0000000000000000000000000000000000000000" ]; then
+              BASE_SHA="HEAD~1"
+            fi
           fi
           
           # Get list of changed task directories
-          CHANGED_TASKS=$(git diff --name-only $BASE_SHA ${{ github.sha }} | grep '^tasks/' | cut -d'/' -f2 | sort -u | jq -R -s -c 'split("\n")[:-1]')
+          CHANGED_TASKS=$(git diff --name-only $BASE_SHA ${{ github.sha }} | grep '^tasks/' | cut -d'/' -f2 | sort -u)
           
-          if [ "$CHANGED_TASKS" == "[]" ] || [ -z "$CHANGED_TASKS" ]; then
+          # Convert to JSON array format without jq
+          if [ -z "$CHANGED_TASKS" ]; then
             echo "tasks=[]" >> $GITHUB_OUTPUT
           else
-            echo "tasks=$CHANGED_TASKS" >> $GITHUB_OUTPUT
+            # Build JSON array manually
+            JSON_ARRAY="["
+            FIRST=true
+            for task in $CHANGED_TASKS; do
+              if [ "$FIRST" = true ]; then
+                JSON_ARRAY="$JSON_ARRAY\"$task\""
+                FIRST=false
+              else
+                JSON_ARRAY="$JSON_ARRAY,\"$task\""
+              fi
+            done
+            JSON_ARRAY="$JSON_ARRAY]"
+            echo "tasks=$JSON_ARRAY" >> $GITHUB_OUTPUT
           fi
 
   run-tasks:
