@@ -102,27 +102,19 @@ def update_file(filepath):
 
 def find_and_update_in_directory(directory="."):
     """Recursively search for files containing the old brand name and update them"""
-    updated_files = set()  # Use set to avoid duplicate processing
+    updated_files = []
     
-    # First, check common file patterns
-    for pattern in FILE_PATTERNS:
-        filepath = os.path.join(directory, pattern)
-        if update_file(filepath):
-            updated_files.add(filepath)
-    
-    # Then, recursively search through all files
+    # Recursively search through all files
     for root, dirs, files in os.walk(directory):
         # Skip certain directories
         dirs[:] = [d for d in dirs if d not in SKIP_DIRS]
         
         for filename in files:
             filepath = os.path.join(root, filename)
-            # Skip files we already updated
-            if filepath not in updated_files:
-                if update_file(filepath):
-                    updated_files.add(filepath)
+            if update_file(filepath):
+                updated_files.append(filepath)
     
-    return list(updated_files)  # Convert back to list for consistent return type
+    return updated_files
 
 if __name__ == "__main__":
     print(f"Searching for '{OLD_NAME}' and replacing with '{NEW_NAME}'...")
