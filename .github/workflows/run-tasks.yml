@@ -13,6 +13,8 @@ on:
 jobs:
   detect-changes:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     outputs:
       tasks: ${{ steps.changed-tasks.outputs.tasks }}
     steps:
