@@ -1,0 +1,102 @@
+name: Run Tasks
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'tasks/**'
+  pull_request:
+    paths:
+      - 'tasks/**'
+
+jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      tasks: ${{ steps.changed-tasks.outputs.tasks }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect changed tasks
+        id: changed-tasks
+        run: |
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          else
+            BASE_SHA="${{ github.event.before }}"
+            # Handle new branches where before is all zeros
+            if [ "$BASE_SHA" == "0000000000000000000000000000000000000000" ]; then
+              BASE_SHA="HEAD~1"
+            fi
+          fi
+          
+          # Get list of changed task directories (directories only, not files)
+          CHANGED_TASKS=$(git diff --name-only $BASE_SHA ${{ github.sha }} | grep '^tasks/' | cut -d'/' -f2 | sort -u | while read task; do [ -d "tasks/$task" ] && echo "$task"; done)
+          
+          # Convert to JSON array format without jq
+          if [ -z "$CHANGED_TASKS" ]; then
+            echo "tasks=[]" >> $GITHUB_OUTPUT
+          else
+            # Build JSON array manually
+            JSON_ARRAY="["
+            FIRST=true
+            for task in $CHANGED_TASKS; do
+              if [ "$FIRST" = true ]; then
+                JSON_ARRAY="$JSON_ARRAY\"$task\""
+                FIRST=false
+              else
+                JSON_ARRAY="$JSON_ARRAY,\"$task\""
+              fi
+            done
+            JSON_ARRAY="$JSON_ARRAY]"
+            echo "tasks=$JSON_ARRAY" >> $GITHUB_OUTPUT
+          fi
+
+  run-tasks:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.tasks != '[]'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    strategy:
+      matrix:
+        task: ${{ fromJson(needs.detect-changes.outputs.tasks) }}
+      fail-fast: false
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install the latest version of uv
+        uses: astral-sh/setup-uv@v7
+
+      - name: Install multi-gitter
+        run: |
+          curl -s https://raw.githubusercontent.com/lindell/multi-gitter/master/install.sh | sudo sh
+
+      - name: Run task (dry-run for PRs)
+        if: github.event_name == 'pull_request'
+        working-directory: tasks/${{ matrix.task }}
+        run: |
+          # Run in dry-run mode with debug logging for pull requests
+          bash run.sh --dry-run --log-level=debug
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run task (production)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        working-directory: tasks/${{ matrix.task }}
+        run: |
+          # Run in production mode after merge
+          # Note: For cross-repository operations, MULTI_GITTER_TOKEN should be
+          # a Personal Access Token with repo scope
+          bash run.sh
+        env:
+          GITHUB_TOKEN: ${{ secrets.MULTI_GITTER_TOKEN || secrets.GITHUB_TOKEN }}
