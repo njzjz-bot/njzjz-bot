@@ -5,7 +5,6 @@
 """Update DeepModeling email from contact@deepmodeling.org to deepmodeling@deepmodeling.com"""
 
 import os
-import re
 
 # Old and new email addresses
 OLD_EMAIL = "contact@deepmodeling.org"
@@ -38,6 +37,16 @@ FILE_PATTERNS = [
     ".github/ISSUE_TEMPLATE/feature_request.md",
     ".github/SECURITY.md",
     ".github/CODE_OF_CONDUCT.md",
+]
+
+# Directories to skip during recursive search
+SKIP_DIRS = {'.git', '__pycache__', 'node_modules', '.tox', '.eggs', 
+             'dist', 'build', '.pytest_cache', '.venv', 'venv'}
+
+# File extensions to check during recursive search
+TEXT_EXTENSIONS = [
+    '.md', '.rst', '.txt', '.py', '.cfg', '.toml', '.yaml', '.yml',
+    '.json', '.sh', '.bash', '.html', '.xml', '.ini', '.conf'
 ]
 
 def update_file(filepath):
@@ -74,20 +83,13 @@ def find_and_update_in_directory(directory="."):
             updated_files.append(filepath)
     
     # Then, recursively search through all text files
-    # (but skip common directories that shouldn't be modified)
-    skip_dirs = {'.git', '__pycache__', 'node_modules', '.tox', '.eggs', 
-                 'dist', 'build', '.pytest_cache', '.venv', 'venv'}
-    
     for root, dirs, files in os.walk(directory):
         # Skip certain directories
-        dirs[:] = [d for d in dirs if d not in skip_dirs]
+        dirs[:] = [d for d in dirs if d not in SKIP_DIRS]
         
         for filename in files:
             # Only check text files (common extensions)
-            if any(filename.endswith(ext) for ext in [
-                '.md', '.rst', '.txt', '.py', '.cfg', '.toml', '.yaml', '.yml',
-                '.json', '.sh', '.bash', '.html', '.xml', '.ini', '.conf'
-            ]):
+            if any(filename.endswith(ext) for ext in TEXT_EXTENSIONS):
                 filepath = os.path.join(root, filename)
                 # Skip files we already updated
                 if filepath not in updated_files:
