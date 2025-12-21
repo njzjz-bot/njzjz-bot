@@ -22,8 +22,6 @@ FILE_PATTERNS = [
     "SECURITY.md",
     "AUTHORS.md",
     "AUTHORS.rst",
-    "CHANGELOG.md",
-    "CHANGELOG.rst",
     
     # Python files
     "setup.py",
@@ -44,17 +42,11 @@ FILE_PATTERNS = [
     ".github/ISSUE_TEMPLATE/feature_request.md",
     ".github/SECURITY.md",
     ".github/CODE_OF_CONDUCT.md",
-    ".github/FUNDING.yml",
-    
-    # Citation files
-    "CITATION.cff",
-    "codemeta.json",
 ]
 
 # Directories to skip during recursive search
 SKIP_DIRS = {'.git', '__pycache__', 'node_modules', '.tox', '.eggs', 
-             'dist', 'build', '.pytest_cache', '.venv', 'venv', '.mypy_cache',
-             '.ruff_cache', 'htmlcov', 'site', '_build'}
+             'dist', 'build', '.pytest_cache', '.venv', 'venv'}
 
 # Characters that are valid in text files
 # Includes: BEL(7), BS(8), HT(9), LF(10), FF(12), CR(13), ESC(27), and printable chars (0x20-0x7E, 0x80-0xFF)
