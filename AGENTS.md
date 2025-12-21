@@ -80,6 +80,7 @@ The `multi-gitter` tool is used to apply changes across multiple repositories. C
 5. **Reference issues**: Link back to the GitHub issue that requested the task
 6. **Minimize scope**: Only modify files that need changes
 7. **Follow conventions**: Use existing tasks as templates
+8. **Exclude large repositories**: When using `-O deepmodeling` to scan the deepmodeling organization, always add `--repo-exclude deepmodeling/sciencepedia` as the sciencepedia repository is too large
 
 ## Requirements
 
