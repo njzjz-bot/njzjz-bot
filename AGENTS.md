@@ -81,6 +81,7 @@ The `multi-gitter` tool is used to apply changes across multiple repositories. C
 6. **Minimize scope**: Only modify files that need changes
 7. **Follow conventions**: Use existing tasks as templates
 8. **Exclude large repositories**: When using `-O deepmodeling` to scan the deepmodeling organization, always add `--repo-exclude deepmodeling/sciencepedia` as the sciencepedia repository is too large
+9. **Keep it simple**: When searching and replacing content in files, simply use `os.walk()` to recursively process all files. Don't handle common file patterns separately first - just process all files in one pass.
 
 ## Requirements
 

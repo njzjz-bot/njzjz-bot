@@ -5,44 +5,10 @@
 """Update DeepModeling domain from deepmodeling.org to deepmodeling.com"""
 
 import os
-import re
 
 # Old and new domains
 OLD_DOMAIN = "deepmodeling.org"
 NEW_DOMAIN = "deepmodeling.com"
-
-# Common file patterns to check
-FILE_PATTERNS = [
-    # Documentation files
-    "README.md",
-    "README.rst",
-    "CONTRIBUTING.md",
-    "CONTRIBUTING.rst",
-    "CODE_OF_CONDUCT.md",
-    "SECURITY.md",
-    "AUTHORS.md",
-    "AUTHORS.rst",
-    
-    # Python files
-    "setup.py",
-    "setup.cfg",
-    "pyproject.toml",
-    
-    # Documentation directories
-    "doc/conf.py",
-    "docs/conf.py",
-    "documentation/conf.py",
-    "doc/index.rst",
-    "docs/index.rst",
-    "doc/index.md",
-    "docs/index.md",
-    
-    # Other config files
-    ".github/ISSUE_TEMPLATE/bug_report.md",
-    ".github/ISSUE_TEMPLATE/feature_request.md",
-    ".github/SECURITY.md",
-    ".github/CODE_OF_CONDUCT.md",
-]
 
 # Directories to skip during recursive search
 SKIP_DIRS = {'.git', '__pycache__', 'node_modules', '.tox', '.eggs', 
@@ -97,27 +63,19 @@ def update_file(filepath):
 
 def find_and_update_in_directory(directory="."):
     """Recursively search for files containing the old domain and update them"""
-    updated_files = set()  # Use set for O(1) membership checking to avoid duplicate processing
+    updated_files = []
     
-    # First, check common file patterns
-    for pattern in FILE_PATTERNS:
-        filepath = os.path.join(directory, pattern)
-        if update_file(filepath):
-            updated_files.add(filepath)
-    
-    # Then, recursively search through all files
+    # Recursively search through all files
     for root, dirs, files in os.walk(directory):
         # Skip certain directories
         dirs[:] = [d for d in dirs if d not in SKIP_DIRS]
         
         for filename in files:
             filepath = os.path.join(root, filename)
-            # Skip files we already updated
-            if filepath not in updated_files:
-                if update_file(filepath):
-                    updated_files.add(filepath)
+            if update_file(filepath):
+                updated_files.append(filepath)
     
-    return list(updated_files)  # Convert back to list for consistent return type
+    return updated_files
 
 if __name__ == "__main__":
     print(f"Searching for '{OLD_DOMAIN}' and replacing with '{NEW_DOMAIN}'...")
