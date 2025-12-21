@@ -80,7 +80,7 @@ def update_file(filepath):
     if OLD_DOMAIN not in content:
         return False
     
-    # Replace the domain - use word boundary to avoid partial replacements
+    # Replace all occurrences of the old domain with the new domain
     # This handles URLs, email addresses, and plain text references
     new_content = content.replace(OLD_DOMAIN, NEW_DOMAIN)
     
