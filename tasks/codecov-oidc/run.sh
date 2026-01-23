@@ -2,8 +2,10 @@
 # This script uses multi-gitter to update codecov-action to use OIDC
 # across all repositories in the deepmodeling organization and njzjz personal account.
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 # Run for deepmodeling organization
-multi-gitter run "uv run $PWD/update-codecov.py" \
+multi-gitter run "uv run $SCRIPT_DIR/update-codecov.py" \
   --author-email "48687836+njzjz-bot@users.noreply.github.com" \
   --author-name "njzjz-bot[bot]" \
   -B codecov-oidc \
@@ -29,7 +31,7 @@ This improves security and follows codecov-action best practices.
 # Run for njzjz user
 # Note: This processes all repositories under njzjz.
 # The script will only create PRs for repos that actually use codecov-action.
-multi-gitter run "uv run $PWD/update-codecov.py" \
+multi-gitter run "uv run $SCRIPT_DIR/update-codecov.py" \
   --author-email "48687836+njzjz-bot@users.noreply.github.com" \
   --author-name "njzjz-bot[bot]" \
   -B codecov-oidc \

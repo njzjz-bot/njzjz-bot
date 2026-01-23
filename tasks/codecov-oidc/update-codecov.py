@@ -84,7 +84,7 @@ def update_codecov_workflow(filepath):
                 step_with = step['with']
             
             # Add use_oidc: true if not already present
-            if 'use_oidc' not in step_with or step_with.get('use_oidc') != True:
+            if 'use_oidc' not in step_with or step_with.get('use_oidc') is not True:
                 step_with['use_oidc'] = True
                 modified = True
                 print(f"  Added use_oidc: true")
