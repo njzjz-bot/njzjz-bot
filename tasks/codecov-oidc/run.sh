@@ -49,6 +49,6 @@ Changes:
 This improves security and follows codecov-action best practices.
 ' \
   --git-type cmd \
-  -O njzjz \
+  -U njzjz \
   --conflict-strategy replace \
   "$@"
