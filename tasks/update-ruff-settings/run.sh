@@ -6,7 +6,6 @@ multi-gitter run "uv run $PWD/update-ruff-settings.py" \
   --author-email "48687836+njzjz-bot@users.noreply.github.com" \
   --author-name "njzjz-bot[bot]" \
   -B update-ruff-settings \
-  --fork \
   -m 'build: update ruff settings to use tool.ruff.lint
 
 Move deprecated top-level ruff settings to the lint section.
