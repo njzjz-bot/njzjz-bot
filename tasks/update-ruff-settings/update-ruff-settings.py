@@ -46,7 +46,7 @@ def update_ruff_config(filepath):
     try:
         with open(filepath, 'rb') as f:
             data = tomllib.load(f)
-    except Exception as e:
+    except (OSError, UnicodeDecodeError) as e:
         print(f"Error reading {filepath}: {e}")
         return False
     
@@ -58,7 +58,7 @@ def update_ruff_config(filepath):
     
     # Find settings that need to be moved
     settings_to_move = {}
-    for setting in list(ruff_config.keys()):
+    for setting in ruff_config.keys():
         if setting in LINT_SETTINGS:
             settings_to_move[setting] = ruff_config[setting]
     
@@ -86,7 +86,7 @@ def update_ruff_config(filepath):
     try:
         with open(filepath, 'wb') as f:
             tomli_w.dump(data, f)
-    except Exception as e:
+    except (OSError, PermissionError) as e:
         print(f"Error writing {filepath}: {e}")
         return False
     
