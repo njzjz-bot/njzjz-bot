@@ -29,13 +29,14 @@ This improves security and follows codecov-action best practices.
   "$@"
 
 # Run for njzjz user
-# Note: This processes all repositories under njzjz.
+# Note: This processes all non-fork repositories under njzjz.
 # The script will only create PRs for repos that actually use codecov-action.
 multi-gitter run "uv run $SCRIPT_DIR/update-codecov.py" \
   --author-email "48687836+njzjz-bot@users.noreply.github.com" \
   --author-name "njzjz-bot[bot]" \
   -B codecov-oidc \
   --fork \
+  --skip-forks \
   -m 'ci: use OIDC for codecov-action
 
 Replace token-based authentication with OIDC (OpenID Connect) for codecov-action.
