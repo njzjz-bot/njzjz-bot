@@ -21,6 +21,8 @@ Changes:
 - Remove token parameter from codecov-action (ignored when using OIDC)
 
 This improves security and follows codecov-action best practices.
+
+Fixes njzjz-bot/njzjz-bot#25.
 ' \
   --git-type cmd \
   -O deepmodeling \
@@ -48,6 +50,8 @@ Changes:
 - Remove token parameter from codecov-action (ignored when using OIDC)
 
 This improves security and follows codecov-action best practices.
+
+Fixes njzjz-bot/njzjz-bot#25.
 ' \
   --git-type cmd \
   -U njzjz \
