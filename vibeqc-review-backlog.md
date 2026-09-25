@@ -10,6 +10,8 @@ Rules:
 - Do not use this branch to bypass branch protection, approvals, or merge requirements.
 
 Initialized by:
+- PR #1289, head c549d7e644f876a1e8ea8906def08f5c13f60090, intended COMMENT: repaired an escaped-newline source corruption in `project_occupied_density` that commented out the norm-loss calculation and left an unconditional throw. Repair commit c549d7e644f876a1e8ea8906def08f5c13f60090 restores the intended residual guard. Previous exact-head evidence: gcc/clang `vibeqc_initial_density_tests` and the xTB orbital validation both failed with `occupied projection loses too much source occupied norm`; after the repair, exact-head clang CI passed while gcc/validation and other lanes were still pending at review time. Keep Draft until the PR's stated GFN2 source-basis translation and endpoint qualification gates are complete. Direct review/inline-comment publication was blocked.
+
 Agent: ChatGPT
 Model: GPT-5.6 Sol
 
