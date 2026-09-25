@@ -12,3 +12,14 @@ Rules:
 Initialized by:
 Agent: ChatGPT
 Model: GPT-5.6 Sol
+
+
+## 2026-09-25 pending publications
+
+- PR #1278, head 8caa88ecf8c031b8db6e0e6e492cd6fdc0779310, intended COMMENT: current source and exact-head checks reviewed; keep Draft because real NVIDIA SR/LR K execution/qualification is still required. Direct review publication was unavailable.
+- PR #1274, head 7a09854e315d56fbe2c52d80c2081e1c89106e8e, intended repair note: restored the ten exact profiler blobs declared by migration.json as retained_exports (42,679 bytes total); fresh exact-head CI required. Direct comment publication was unavailable.
+- PR #1282, head 23b5fbce94b992618ebbe9962cbc5c180678eccc, intended repair note: validation/timeout/local-probe fixes are present; repaired two PLW1510 negative-path subprocess calls with explicit check=False; fresh exact-head CI required. Direct review publication was unavailable.
+- PR #1294, head c07b1ef8b43d079c2ec1dbe018fc2686a202028a, intended repair note: repaired the PLW1510 seed-probe negative-path subprocess call with explicit check=False; fresh exact-head CI required. Direct review publication was unavailable.
+
+Agent: ChatGPT
+Model: GPT-5.6 Sol
