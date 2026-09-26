@@ -28,3 +28,12 @@ Model: GPT-5.6 Sol
 
 Agent: ChatGPT
 Model: GPT-5.6 Sol
+
+
+## 2026-09-26 pending publications
+
+- PR #1389, head 0b08a5aef244c903fc3dcd7f4eeb3533f8091ade, intended COMMENT with inline finding: exact-head Pre-commit run 36223431359 / job 108352855477 deterministically fails type checking at python/vibeqc_compiler/xc/geometry_cuda.py:102 because the imported WB97M-V threshold expressions are not statically guaranteed to expose .hex(). Preserve the exact FP64 generated literals by using explicit float conversion for DENSITY_THRESHOLD, SIGMA_THRESHOLD, and TAU_THRESHOLD before .hex(); do not weaken the type check. Main CI was still in progress, while CuMetal CUDA and PR-overlap had passed. Direct branch repair and direct inline review publication were both blocked before reaching GitHub.
+- PR #1382, head ed3e3499c403b47087912858d3fc7616e379f634, intended COMMENT/LGTM self-review: reviewed the full build-identity change including the inventory-file dependency fix. Manifest membership changes retain configure-time discovery; ordinary source-content edits use build-time hashing; deletion/rename/backdated-addition cases invalidate the generated identity through build_identity_inputs.txt. Exact-head CI, CuMetal CUDA, Pre-commit, and PR-overlap all passed and no unresolved inline threads remain. The executing account authored the PR, so the intended disposition is a COMMENT rather than self-APPROVE. Direct review publication was blocked.
+
+Agent: ChatGPT
+Model: GPT-5.6 Sol
