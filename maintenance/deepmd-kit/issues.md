@@ -26,13 +26,14 @@ This branch is a persistent queue for DeepMD-kit issue triage and maintainer rep
 ### #5983 — pair_style deepmd/kk does not populate global virial / thermo pressure for a DPA4 pt_expt model
 
 - URL: https://github.com/deepmodeling/deepmd-kit/issues/5983
-- Status: **RETRY_REPLY**
-- Last checked: 2026-09-25
+- Status: **REPLIED**
+- Last checked: 2026-09-26
+- Reply: https://github.com/deepmodeling/deepmd-kit/issues/5983#issuecomment-5843298527
 - Evidence:
   - The reporter tested changing the Kokkos guard from `if (vflag_global)` to `if (vflag_either)`.
   - The reporter confirmed that the same reproduction then reports nonzero global thermo stress and that summed per-atom centroid virial remains consistent with the non-Kokkos path.
-  - The issue is still open.
-- Suggested maintainer reply:
+  - The issue remains open; the maintainer follow-up has now been posted.
+- Posted maintainer reply:
 
 > Thanks for testing and confirming the guard change. That is strong evidence that the Kokkos path should use `vflag_either` here rather than `vflag_global`.
 >
@@ -42,6 +43,11 @@ This branch is a persistent queue for DeepMD-kit issue triage and maintainer rep
 > Model: GPT-5.6 Sol
 
 ## Check log
+
+### 2026-09-26
+
+- Retried the pending maintainer reply for #5983.
+- Direct GitHub comment succeeded; marked the item **REPLIED** and recorded the comment URL.
 
 ### 2026-09-25
 
