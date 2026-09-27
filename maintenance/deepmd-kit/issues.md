@@ -23,6 +23,18 @@ This branch is a persistent queue for DeepMD-kit issue triage and maintainer rep
 
 ## Queue
 
+### #6000 — Support decoupled observer-model inference for model deviation in deepmd/kk
+
+- URL: https://github.com/deepmodeling/deepmd-kit/issues/6000
+- Status: **REPLIED**
+- Last checked: 2026-09-27
+- Reply: https://github.com/deepmodeling/deepmd-kit/issues/6000#issuecomment-5857368210
+- Evidence:
+  - Current `master` still rejects `numb_models != 1` in `PairDeepMDKokkos::init_style()`.
+  - The regular `pair_style deepmd` path initializes the multi-model model-deviation backend and already separates the model-0 dynamics output from committee deviation evaluation.
+  - The issue therefore describes a real `deepmd/kk` feature gap rather than a usage problem.
+- Posted maintainer reply: confirmed the gap, endorsed the driver/observer split as the implementation direction, and suggested a narrow first milestone around compatible `.pt2` committee models, model-0 dynamics, `out_freq` observer evaluation, device-graph reuse, and deterministic agreement with regular `deepmd`.
+
 ### #5983 — pair_style deepmd/kk does not populate global virial / thermo pressure for a DPA4 pt_expt model
 
 - URL: https://github.com/deepmodeling/deepmd-kit/issues/5983
@@ -43,6 +55,11 @@ This branch is a persistent queue for DeepMD-kit issue triage and maintainer rep
 > Model: GPT-5.6 Sol
 
 ## Check log
+
+### 2026-09-27
+
+- Manually retried the maintainer reply for #6000.
+- Direct GitHub comment succeeded; recorded the item as **REPLIED** with the comment URL.
 
 ### 2026-09-26
 
